@@ -6,18 +6,25 @@
 <title>For You</title>
 
 <style>
-html,body{
-  margin:0;
-  height:100%;
-  background:radial-gradient(circle at top,#1a1a2e,#0b0b12);
+:root{
+  --bg1:#151528;
+  --bg2:#07070d;
+  --text:#f3f3f7;
+  --muted:#b6b6c6;
+  --glass:rgba(255,255,255,.07);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;overflow:hidden}
+body{
+  background:radial-gradient(900px 600px at 50% 10%, var(--bg1), var(--bg2));
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  color:#f2f2f7;
+  color:var(--text);
 }
 
 .center{
   height:100%;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
@@ -26,50 +33,84 @@ html,body{
 
 .fade{
   opacity:0;
-  animation:fadeIn 1.6s ease forwards;
+  transform:translateY(12px);
+  animation:fadeUp 1.6s ease forwards;
 }
-
-@keyframes fadeIn{
-  to{opacity:1}
-}
+@keyframes fadeUp{to{opacity:1;transform:none}}
 
 .button{
-  margin-top:24px;
-  padding:12px 30px;
+  margin-top:26px;
+  padding:14px 36px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.25);
   background:transparent;
-  color:#fff;
+  color:var(--text);
+  font-size:15px;
   cursor:pointer;
 }
+.button:hover{background:rgba(255,255,255,.08)}
 
-#scene{display:none}
+#scene{display:none;position:absolute;inset:0}
 
-/* Flower */
-.flower{
-  width:180px;
-  margin-bottom:30px;
-  animation:grow 1.8s cubic-bezier(.2,.8,.2,1) forwards;
+/* Bouquet wrapper */
+.bouquetWrap{
+  width:min(520px,92vw);
+  aspect-ratio: 5/6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  filter: drop-shadow(0 26px 32px rgba(0,0,0,.35));
+  opacity:0;
+  transform:translateY(40px) scale(.96);
+  animation:rise 1.6s cubic-bezier(.2,.85,.2,1) forwards;
+}
+@keyframes rise{
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
-@keyframes grow{
-  from{transform:scale(.6);opacity:0}
-  to{transform:scale(1);opacity:1}
+/* Bloom timing */
+.bloom{
+  transform-origin:50% 50%;
+  opacity:0;
+  transform:scale(.55);
+  animation:bloom 1.15s cubic-bezier(.2,.9,.2,1) forwards;
+}
+.b2{animation-delay:.12s}
+.b3{animation-delay:.24s}
+.b4{animation-delay:.36s}
+.b5{animation-delay:.48s}
+@keyframes bloom{to{opacity:1;transform:scale(1)}}
+
+/* Subtle floating petals */
+.petal{
+  position:absolute;
+  top:-10vh;
+  font-size:14px;
+  opacity:.22;
+  animation:fall linear infinite;
+  pointer-events:none;
+}
+@keyframes fall{
+  to{transform:translateY(120vh) rotate(260deg)}
 }
 
 .card{
-  max-width:380px;
+  position:absolute;
+  bottom:12%;
+  left:50%;
+  transform:translateX(-50%);
+  width:min(440px,86vw);
   padding:20px 22px;
-  border-radius:16px;
-  background:rgba(255,255,255,.06);
-  backdrop-filter:blur(10px);
-  margin-top:10px;
+  border-radius:18px;
+  background:var(--glass);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.09);
+  opacity:0;
+  animation:fadeUp 1.4s ease forwards;
+  animation-delay:1.6s;
 }
 
-.signature{
-  margin-top:12px;
-  color:#ffb6d5;
-}
+.signature{margin-top:12px;color:#ffb6d5;font-weight:500}
 </style>
 </head>
 
@@ -77,55 +118,80 @@ html,body{
 
 <div class="center" id="intro">
   <div>
-    <div class="fade" style="animation-delay:.3s">
-      I wanted to give you a flower.
+    <div class="fade" style="animation-delay:.25s;font-size:18px">
+      I wanted to give you flowers.
     </div>
-    <div class="fade" style="animation-delay:1s;opacity:.75">
-      Even from far away.
+    <div class="fade" style="animation-delay:1.05s;color:var(--muted);font-size:14px">
+      So I made a bouquet that blooms just for you.
     </div>
-    <button class="button fade" style="animation-delay:1.8s" onclick="openGift()">
+    <button class="button fade" style="animation-delay:1.85s" onclick="start()">
       Open
     </button>
   </div>
 </div>
 
-<div class="center" id="scene">
+<div id="scene">
+  <div class="center">
+    <div class="bouquetWrap" aria-hidden="true">
+      <!-- Drawn bouquet (SVG) -->
+      <svg viewBox="0 0 640 760" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Paper -->
+          <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="rgba(255,255,255,.12)"/>
+            <stop offset=".55" stop-color="rgba(255,255,255,.06)"/>
+            <stop offset="1" stop-color="rgba(255,255,255,.10)"/>
+          </linearGradient>
 
-  <!-- DRAWN FLOWER -->
-  <svg class="flower" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
-    <!-- stem -->
-    <rect x="96" y="120" width="8" height="90" rx="4" fill="#5fa58a"/>
+          <!-- Ribbon -->
+          <linearGradient id="ribbon" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#ffd1e6"/>
+            <stop offset="1" stop-color="#e85b93"/>
+          </linearGradient>
 
-    <!-- leaf -->
-    <path d="M70 160 C40 140 40 110 70 120 C90 130 90 150 70 160 Z" fill="#6fc9a8"/>
+          <!-- Stems + leaves -->
+          <linearGradient id="stem" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#79e0b8"/>
+            <stop offset="1" stop-color="#2d7f60"/>
+          </linearGradient>
 
-    <!-- petals -->
-    <g fill="#f4b6cc">
-      <circle cx="100" cy="70" r="30"/>
-      <circle cx="70" cy="90" r="30"/>
-      <circle cx="130" cy="90" r="30"/>
-      <circle cx="80" cy="120" r="30"/>
-      <circle cx="120" cy="120" r="30"/>
-    </g>
+          <!-- Petal gradients -->
+          <radialGradient id="petalPink" cx="30%" cy="25%" r="75%">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".75"/>
+            <stop offset=".35" stop-color="#ffd2e3" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#e35b94" stop-opacity=".98"/>
+          </radialGradient>
 
-    <!-- center -->
-    <circle cx="100" cy="100" r="20" fill="#ffd36a"/>
-  </svg>
+          <radialGradient id="petalLav" cx="30%" cy="25%" r="75%">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".70"/>
+            <stop offset=".40" stop-color="#e6d6ff" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#b07cff" stop-opacity=".98"/>
+          </radialGradient>
 
-  <div class="card fade" style="animation-delay:.6s">
-    I wish I could give this to you in person.<br><br>
-    Until then, this is from me.
-    <div class="signature">— Omar</div>
-  </div>
+          <radialGradient id="petalPeach" cx="30%" cy="25%" r="75%">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".70"/>
+            <stop offset=".38" stop-color="#ffd9c4" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#ff7d73" stop-opacity=".98"/>
+          </radialGradient>
 
-</div>
+          <radialGradient id="petalRose" cx="30%" cy="25%" r="75%">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".65"/>
+            <stop offset=".45" stop-color="#ffc2d9" stop-opacity=".95"/>
+            <stop offset="1" stop-color="#b10f55" stop-opacity=".98"/>
+          </radialGradient>
 
-<script>
-function openGift(){
-  document.getElementById("intro").style.display="none";
-  document.getElementById("scene").style.display="flex";
-}
-</script>
+          <radialGradient id="centerGold" cx="35%" cy="30%" r="70%">
+            <stop offset="0" stop-color="#fff7cf"/>
+            <stop offset="1" stop-color="#ffbd4a"/>
+          </radialGradient>
 
-</body>
-</html>
+          <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#000" flood-opacity=".35"/>
+          </filter>
+
+          <!-- One detailed flower (petals as paths) -->
+          <g id="flowerDetailed">
+            <!-- 10 petals -->
+            <g>
+              <path d="M0,-86 C16,-76 26,-56 22,-38 C18,-20 6,-10 0,0 C-6,-10 -18,-20 -22,-38 C-26,-56 -16,-76 0,-86Z" />
+              <path
