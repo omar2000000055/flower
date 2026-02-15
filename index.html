@@ -6,27 +6,18 @@
 <title>For You</title>
 
 <style>
-:root{
-  --bg:#0b0b12;
-  --soft:#161625;
-  --text:#f2f2f7;
-  --muted:#b6b6c6;
-  --accent:#ffb6d5;
-}
-
-*{box-sizing:border-box}
 html,body{
   margin:0;
   height:100%;
-  background:radial-gradient(circle at top,var(--soft),var(--bg));
+  background:radial-gradient(circle at top,#1a1a2e,#0b0b12);
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-  color:var(--text);
-  overflow:hidden;
+  color:#f2f2f7;
 }
 
 .center{
   height:100%;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
@@ -35,59 +26,49 @@ html,body{
 
 .fade{
   opacity:0;
-  transform:translateY(12px);
-  animation:fadeUp 1.8s ease forwards;
+  animation:fadeIn 1.6s ease forwards;
 }
 
-@keyframes fadeUp{
-  to{opacity:1;transform:none}
+@keyframes fadeIn{
+  to{opacity:1}
 }
 
 .button{
-  margin-top:28px;
-  padding:14px 36px;
+  margin-top:24px;
+  padding:12px 30px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.25);
   background:transparent;
-  color:var(--text);
-  font-size:15px;
+  color:#fff;
   cursor:pointer;
 }
-.button:hover{background:rgba(255,255,255,.08)}
 
-#scene{display:none;position:absolute;inset:0}
+#scene{display:none}
 
-/* Bouquet image */
-.bouquet{
-  width:260px;
-  max-width:80vw;
-  opacity:0;
-  transform:scale(.85);
-  animation:bouquetIn 2s cubic-bezier(.2,.8,.2,1) forwards;
+/* Flower */
+.flower{
+  width:180px;
+  margin-bottom:30px;
+  animation:grow 1.8s cubic-bezier(.2,.8,.2,1) forwards;
 }
 
-@keyframes bouquetIn{
-  to{opacity:1;transform:scale(1)}
+@keyframes grow{
+  from{transform:scale(.6);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
 .card{
-  position:absolute;
-  bottom:14%;
-  left:50%;
-  transform:translateX(-50%);
-  max-width:420px;
-  padding:22px 24px;
-  border-radius:18px;
+  max-width:380px;
+  padding:20px 22px;
+  border-radius:16px;
   background:rgba(255,255,255,.06);
-  backdrop-filter:blur(12px);
-  opacity:0;
-  animation:fadeUp 1.6s ease forwards;
-  animation-delay:1.6s;
+  backdrop-filter:blur(10px);
+  margin-top:10px;
 }
 
 .signature{
-  margin-top:14px;
-  color:var(--accent);
+  margin-top:12px;
+  color:#ffb6d5;
 }
 </style>
 </head>
@@ -97,38 +78,52 @@ html,body{
 <div class="center" id="intro">
   <div>
     <div class="fade" style="animation-delay:.3s">
-      Someone wanted to give you flowers.
+      I wanted to give you a flower.
     </div>
-    <div class="fade" style="animation-delay:1.1s;color:var(--muted)">
+    <div class="fade" style="animation-delay:1s;opacity:.75">
       Even from far away.
     </div>
-    <button class="button fade" style="animation-delay:2s" onclick="start()">
+    <button class="button fade" style="animation-delay:1.8s" onclick="openGift()">
       Open
     </button>
   </div>
 </div>
 
-<div id="scene">
-  <div class="center">
-    <img
-      class="bouquet"
-      src="https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80"
-      alt="Bouquet of flowers"
-    />
-  </div>
+<div class="center" id="scene">
 
-  <div class="card">
-    I wish I could give you these in person.<br><br>
-    Until then, let this remind you that
-    someone is thinking of you.
+  <!-- DRAWN FLOWER -->
+  <svg class="flower" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+    <!-- stem -->
+    <rect x="96" y="120" width="8" height="90" rx="4" fill="#5fa58a"/>
+
+    <!-- leaf -->
+    <path d="M70 160 C40 140 40 110 70 120 C90 130 90 150 70 160 Z" fill="#6fc9a8"/>
+
+    <!-- petals -->
+    <g fill="#f4b6cc">
+      <circle cx="100" cy="70" r="30"/>
+      <circle cx="70" cy="90" r="30"/>
+      <circle cx="130" cy="90" r="30"/>
+      <circle cx="80" cy="120" r="30"/>
+      <circle cx="120" cy="120" r="30"/>
+    </g>
+
+    <!-- center -->
+    <circle cx="100" cy="100" r="20" fill="#ffd36a"/>
+  </svg>
+
+  <div class="card fade" style="animation-delay:.6s">
+    I wish I could give this to you in person.<br><br>
+    Until then, this is from me.
     <div class="signature">— Omar</div>
   </div>
+
 </div>
 
 <script>
-function start(){
-  document.getElementById('intro').style.display='none';
-  document.getElementById('scene').style.display='block';
+function openGift(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("scene").style.display="flex";
 }
 </script>
 
