@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>For You</title>
 
 <style>
@@ -27,10 +27,12 @@ html,body{
 .center{
   height:100%;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
   padding:24px;
+  gap:14px;
 }
 
 .fade{
@@ -41,7 +43,7 @@ html,body{
 @keyframes fadeUp{to{opacity:1;transform:none}}
 
 .button{
-  margin-top:26px;
+  margin-top:20px;
   padding:14px 36px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.25);
@@ -54,22 +56,27 @@ html,body{
 
 #scene{display:none;position:absolute;inset:0}
 
-/* Bouquet animation */
+/* Bouquet */
 .bouquet{
-  width:320px;
-  max-width:90vw;
+  width:min(520px,92vw);
+  height:auto;
+  display:block;
+  margin:0 auto;
+  overflow:visible;
+  transform-origin:center;
   opacity:0;
-  transform:translateY(40px) scale(.9);
+  transform:translateY(24px) scale(.95);
   animation:rise 1.8s cubic-bezier(.2,.85,.2,1) forwards;
 }
+
 @keyframes rise{
-  to{opacity:1;transform:none}
+  to{opacity:1;transform:translateY(0) scale(1)}
 }
 
 .bloom{
   transform-origin:center;
   opacity:0;
-  transform:scale(.5);
+  transform:scale(.55);
   animation:bloom 1.2s cubic-bezier(.2,.9,.2,1) forwards;
 }
 .b2{animation-delay:.15s}
@@ -82,10 +89,6 @@ html,body{
 }
 
 .card{
-  position:absolute;
-  bottom:12%;
-  left:50%;
-  transform:translateX(-50%);
   max-width:420px;
   padding:22px 24px;
   border-radius:18px;
@@ -124,10 +127,14 @@ html,body{
 <!-- SCENE -->
 <div id="scene">
   <div class="center">
+
     <!-- DRAWN BOUQUET -->
-    <svg class="bouquet" viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+    <svg class="bouquet"
+         viewBox="0 0 400 520"
+         preserveAspectRatio="xMidYMid meet"
+         xmlns="http://www.w3.org/2000/svg">
+
       <defs>
-        <!-- Petal gradients -->
         <radialGradient id="petalPink" cx="30%" cy="25%" r="70%">
           <stop offset="0%" stop-color="#ffffff" stop-opacity=".8"/>
           <stop offset="45%" stop-color="#ffd1e3"/>
@@ -154,25 +161,28 @@ html,body{
           <feDropShadow dx="0" dy="16" stdDeviation="12" flood-opacity=".35"/>
         </filter>
 
-        <!-- Flower shape -->
-        <g id="flower">
-          <g>
-            <path d="M0,-55 C14,-50 22,-35 18,-22 C14,-10 4,-5 0,0 C-4,-5 -14,-10 -18,-22 C-22,-35 -14,-50 0,-55Z"/>
-            <use href="#petal" />
-          </g>
-        </g>
-
-        <path id="petal" d="M0,-55 C14,-50 22,-35 18,-22 C14,-10 4,-5 0,0 C-4,-5 -14,-10 -18,-22 C-22,-35 -14,-50 0,-55Z"/>
+        <path id="petal"
+          d="M0,-55 C14,-50 22,-35 18,-22
+             C14,-10 4,-5 0,0
+             C-4,-5 -14,-10 -18,-22
+             C-22,-35 -14,-50 0,-55Z"/>
       </defs>
 
       <!-- stems -->
-      <path d="M200 300 C185 360 180 420 185 500" stroke="url(#stem)" stroke-width="10" stroke-linecap="round"/>
-      <path d="M165 295 C145 360 135 420 140 500" stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
-      <path d="M235 295 C255 360 265 420 260 500" stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M200 300 C185 360 180 420 185 500"
+            stroke="url(#stem)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M165 295 C145 360 135 420 140 500"
+            stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M235 295 C255 360 265 420 260 500"
+            stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
 
       <!-- leaves -->
-      <path d="M150 400 C110 385 100 350 120 335 C155 335 170 365 150 400 Z" fill="url(#stem)"/>
-      <path d="M250 405 C290 390 300 355 280 340 C245 340 230 370 250 405 Z" fill="url(#stem)"/>
+      <path d="M150 400 C110 385 100 350 120 335
+               C155 335 170 365 150 400 Z"
+            fill="url(#stem)"/>
+      <path d="M250 405 C290 390 300 355 280 340
+               C245 340 230 370 250 405 Z"
+            fill="url(#stem)"/>
 
       <!-- flowers -->
       <g class="bloom b1" filter="url(#shadow)" transform="translate(200 170)">
@@ -229,13 +239,15 @@ html,body{
         </g>
         <circle r="11" fill="url(#centerGold)"/>
       </g>
-    </svg>
-  </div>
 
-  <div class="card">
-    I wish I could give these to you in person.<br><br>
-    Until then, this is from me.
-    <div class="signature">— Omar</div>
+    </svg>
+
+    <div class="card">
+      I wish I could give these to you in person.<br><br>
+      Until then, this is from me.
+      <div class="signature">— Omar</div>
+    </div>
+
   </div>
 </div>
 
