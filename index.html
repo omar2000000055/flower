@@ -68,13 +68,14 @@ html,body{
   transform:translateY(24px) scale(.95);
   animation:rise 1.8s cubic-bezier(.2,.85,.2,1) forwards;
 }
-
 @keyframes rise{
   to{opacity:1;transform:translateY(0) scale(1)}
 }
 
+/* Bloom animation (IMPORTANT: does NOT touch the translate positioning now) */
 .bloom{
-  transform-origin:center;
+  transform-box: fill-box;
+  transform-origin: center;
   opacity:0;
   transform:scale(.55);
   animation:bloom 1.2s cubic-bezier(.2,.9,.2,1) forwards;
@@ -109,7 +110,6 @@ html,body{
 
 <body>
 
-<!-- INTRO -->
 <div class="center" id="intro">
   <div>
     <div class="fade" style="animation-delay:.3s;font-size:18px">
@@ -124,11 +124,9 @@ html,body{
   </div>
 </div>
 
-<!-- SCENE -->
 <div id="scene">
   <div class="center">
 
-    <!-- DRAWN BOUQUET -->
     <svg class="bouquet"
          viewBox="0 0 400 520"
          preserveAspectRatio="xMidYMid meet"
@@ -184,60 +182,70 @@ html,body{
                C245 340 230 370 250 405 Z"
             fill="url(#stem)"/>
 
-      <!-- flowers -->
-      <g class="bloom b1" filter="url(#shadow)" transform="translate(200 170)">
-        <g fill="url(#petalPink)">
-          <use href="#petal"/>
-          <use href="#petal" transform="rotate(72)"/>
-          <use href="#petal" transform="rotate(144)"/>
-          <use href="#petal" transform="rotate(216)"/>
-          <use href="#petal" transform="rotate(288)"/>
+      <!-- FLOWERS (position group outside, bloom group inside) -->
+      <g transform="translate(200 170)">
+        <g class="bloom b1" filter="url(#shadow)">
+          <g fill="url(#petalPink)">
+            <use href="#petal"/>
+            <use href="#petal" transform="rotate(72)"/>
+            <use href="#petal" transform="rotate(144)"/>
+            <use href="#petal" transform="rotate(216)"/>
+            <use href="#petal" transform="rotate(288)"/>
+          </g>
+          <circle r="14" fill="url(#centerGold)"/>
         </g>
-        <circle r="14" fill="url(#centerGold)"/>
       </g>
 
-      <g class="bloom b2" filter="url(#shadow)" transform="translate(150 210) scale(.9)">
-        <g fill="url(#petalLav)">
-          <use href="#petal"/>
-          <use href="#petal" transform="rotate(72)"/>
-          <use href="#petal" transform="rotate(144)"/>
-          <use href="#petal" transform="rotate(216)"/>
-          <use href="#petal" transform="rotate(288)"/>
+      <g transform="translate(150 210) scale(.9)">
+        <g class="bloom b2" filter="url(#shadow)">
+          <g fill="url(#petalLav)">
+            <use href="#petal"/>
+            <use href="#petal" transform="rotate(72)"/>
+            <use href="#petal" transform="rotate(144)"/>
+            <use href="#petal" transform="rotate(216)"/>
+            <use href="#petal" transform="rotate(288)"/>
+          </g>
+          <circle r="13" fill="url(#centerGold)"/>
         </g>
-        <circle r="13" fill="url(#centerGold)"/>
       </g>
 
-      <g class="bloom b3" filter="url(#shadow)" transform="translate(250 215) scale(.9)">
-        <g fill="url(#petalPink)">
-          <use href="#petal"/>
-          <use href="#petal" transform="rotate(72)"/>
-          <use href="#petal" transform="rotate(144)"/>
-          <use href="#petal" transform="rotate(216)"/>
-          <use href="#petal" transform="rotate(288)"/>
+      <g transform="translate(250 215) scale(.9)">
+        <g class="bloom b3" filter="url(#shadow)">
+          <g fill="url(#petalPink)">
+            <use href="#petal"/>
+            <use href="#petal" transform="rotate(72)"/>
+            <use href="#petal" transform="rotate(144)"/>
+            <use href="#petal" transform="rotate(216)"/>
+            <use href="#petal" transform="rotate(288)"/>
+          </g>
+          <circle r="13" fill="url(#centerGold)"/>
         </g>
-        <circle r="13" fill="url(#centerGold)"/>
       </g>
 
-      <g class="bloom b4" filter="url(#shadow)" transform="translate(185 245) scale(.8)">
-        <g fill="url(#petalLav)">
-          <use href="#petal"/>
-          <use href="#petal" transform="rotate(72)"/>
-          <use href="#petal" transform="rotate(144)"/>
-          <use href="#petal" transform="rotate(216)"/>
-          <use href="#petal" transform="rotate(288)"/>
+      <g transform="translate(185 245) scale(.8)">
+        <g class="bloom b4" filter="url(#shadow)">
+          <g fill="url(#petalLav)">
+            <use href="#petal"/>
+            <use href="#petal" transform="rotate(72)"/>
+            <use href="#petal" transform="rotate(144)"/>
+            <use href="#petal" transform="rotate(216)"/>
+            <use href="#petal" transform="rotate(288)"/>
+          </g>
+          <circle r="12" fill="url(#centerGold)"/>
         </g>
-        <circle r="12" fill="url(#centerGold)"/>
       </g>
 
-      <g class="bloom b5" filter="url(#shadow)" transform="translate(215 255) scale(.75)">
-        <g fill="url(#petalPink)">
-          <use href="#petal"/>
-          <use href="#petal" transform="rotate(72)"/>
-          <use href="#petal" transform="rotate(144)"/>
-          <use href="#petal" transform="rotate(216)"/>
-          <use href="#petal" transform="rotate(288)"/>
+      <g transform="translate(215 255) scale(.75)">
+        <g class="bloom b5" filter="url(#shadow)">
+          <g fill="url(#petalPink)">
+            <use href="#petal"/>
+            <use href="#petal" transform="rotate(72)"/>
+            <use href="#petal" transform="rotate(144)"/>
+            <use href="#petal" transform="rotate(216)"/>
+            <use href="#petal" transform="rotate(288)"/>
+          </g>
+          <circle r="11" fill="url(#centerGold)"/>
         </g>
-        <circle r="11" fill="url(#centerGold)"/>
       </g>
 
     </svg>
