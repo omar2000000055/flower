@@ -72,7 +72,7 @@ html,body{
   to{opacity:1;transform:translateY(0) scale(1)}
 }
 
-/* Bloom animation (IMPORTANT: does NOT touch the translate positioning now) */
+/* Bloom animation (does NOT break SVG translate positioning) */
 .bloom{
   transform-box: fill-box;
   transform-origin: center;
@@ -166,12 +166,12 @@ html,body{
              C-22,-35 -14,-50 0,-55Z"/>
       </defs>
 
-      <!-- stems -->
-      <path d="M200 300 C185 360 180 420 185 500"
+      <!-- stems (END right under the flower heads now) -->
+      <path d="M200 310 C190 345 185 395 188 500"
             stroke="url(#stem)" stroke-width="10" stroke-linecap="round"/>
-      <path d="M165 295 C145 360 135 420 140 500"
+      <path d="M165 312 C148 350 140 402 142 500"
             stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
-      <path d="M235 295 C255 360 265 420 260 500"
+      <path d="M235 312 C252 350 260 402 258 500"
             stroke="url(#stem)" stroke-width="8" stroke-linecap="round"/>
 
       <!-- leaves -->
@@ -182,8 +182,8 @@ html,body{
                C245 340 230 370 250 405 Z"
             fill="url(#stem)"/>
 
-      <!-- FLOWERS (position group outside, bloom group inside) -->
-      <g transform="translate(200 170)">
+      <!-- FLOWERS moved DOWN so they "attach" to stems -->
+      <g transform="translate(200 245)">
         <g class="bloom b1" filter="url(#shadow)">
           <g fill="url(#petalPink)">
             <use href="#petal"/>
@@ -196,7 +196,7 @@ html,body{
         </g>
       </g>
 
-      <g transform="translate(150 210) scale(.9)">
+      <g transform="translate(158 275) scale(.9)">
         <g class="bloom b2" filter="url(#shadow)">
           <g fill="url(#petalLav)">
             <use href="#petal"/>
@@ -209,7 +209,7 @@ html,body{
         </g>
       </g>
 
-      <g transform="translate(250 215) scale(.9)">
+      <g transform="translate(242 278) scale(.9)">
         <g class="bloom b3" filter="url(#shadow)">
           <g fill="url(#petalPink)">
             <use href="#petal"/>
@@ -222,7 +222,7 @@ html,body{
         </g>
       </g>
 
-      <g transform="translate(185 245) scale(.8)">
+      <g transform="translate(185 305) scale(.8)">
         <g class="bloom b4" filter="url(#shadow)">
           <g fill="url(#petalLav)">
             <use href="#petal"/>
@@ -235,7 +235,7 @@ html,body{
         </g>
       </g>
 
-      <g transform="translate(215 255) scale(.75)">
+      <g transform="translate(215 312) scale(.75)">
         <g class="bloom b5" filter="url(#shadow)">
           <g fill="url(#petalPink)">
             <use href="#petal"/>
