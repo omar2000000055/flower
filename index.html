@@ -1,145 +1,158 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You</title>
 
 <style>
+:root{
+  --bg:#0b0b12;
+  --soft:#161625;
+  --text:#f2f2f7;
+  --muted:#b6b6c6;
+  --accent:#ffb6d5;
+}
+
 *{box-sizing:border-box}
 html,body{
   margin:0;
   height:100%;
-  background:#050508;
-  color:#fff;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  background:radial-gradient(circle at top,var(--soft),var(--bg));
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text);
   overflow:hidden;
 }
 
-.screen{
+.center{
   height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   text-align:center;
   padding:24px;
 }
 
 .fade{
   opacity:0;
-  animation:fadeIn 2s ease forwards;
+  transform:translateY(10px);
+  animation:fadeUp 1.8s ease forwards;
 }
 
-.delay1{animation-delay:1s}
-.delay2{animation-delay:3s}
-
-@keyframes fadeIn{
-  to{opacity:1}
+@keyframes fadeUp{
+  to{opacity:1;transform:none}
 }
 
-.tap{
-  margin-top:30px;
-  padding:14px 28px;
-  border-radius:30px;
-  border:1px solid rgba(255,255,255,.3);
+.button{
+  margin-top:28px;
+  padding:14px 34px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
   background:transparent;
-  color:white;
+  color:var(--text);
   font-size:15px;
   cursor:pointer;
 }
 
-.flowers{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  pointer-events:none;
+.button:hover{
+  background:rgba(255,255,255,.08);
 }
 
-.flower{
-  font-size:80px;
+#scene{display:none;position:absolute;inset:0}
+
+.flowers{
+  font-size:88px;
+  animation:bloom 2s cubic-bezier(.2,.8,.2,1) forwards;
   opacity:0;
-  transform:scale(0);
-  animation:bloom 2s ease forwards;
 }
 
 @keyframes bloom{
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
+  to{opacity:1;transform:scale(1)}
 }
 
 .petals span{
   position:absolute;
-  font-size:24px;
+  top:-10%;
+  font-size:22px;
+  opacity:.7;
   animation:fall linear infinite;
 }
 
 @keyframes fall{
-  from{transform:translateY(-10vh)}
-  to{transform:translateY(110vh)}
+  to{transform:translateY(120vh) rotate(360deg)}
 }
 
-.message{
+.card{
   position:absolute;
   bottom:18%;
-  width:100%;
-  padding:0 30px;
+  left:50%;
+  transform:translateX(-50%);
+  max-width:420px;
+  padding:22px 24px;
+  border-radius:18px;
+  background:rgba(255,255,255,.06);
+  backdrop-filter:blur(10px);
   opacity:0;
-  animation:fadeIn 2s ease forwards;
-  animation-delay:2s;
+  animation:fadeUp 1.6s ease forwards;
+  animation-delay:1.6s;
 }
 
 .signature{
-  margin-top:18px;
-  opacity:.7;
+  margin-top:14px;
+  color:var(--accent);
+  font-weight:500;
 }
 </style>
 </head>
 
 <body>
 
-<div class="screen" id="intro">
-  <div class="fade delay1">Someone far away wanted to give you flowers…</div>
-  <button class="tap fade delay2" onclick="start()">Tap to open</button>
-</div>
-
-<div class="flowers" id="flowers" style="display:none;">
-  <div class="flower">🌸🌷🌹</div>
-</div>
-
-<div class="message" id="message">
+<div class="center" id="intro">
   <div>
-    I wish I could give you these in person.<br>
-    Until then, let this remind you that<br>
-    someone is thinking of you.
-    <div class="signature">— Omar</div>
+    <div class="fade" style="animation-delay:.2s">
+      Someone wanted to give you flowers.
+    </div>
+    <div class="fade" style="animation-delay:1s;color:var(--muted)">
+      Even from far away.
+    </div>
+    <button class="button fade" style="animation-delay:2s" onclick="start()">
+      Open
+    </button>
+  </div>
+</div>
+
+<div id="scene">
+  <div class="center">
+    <div class="flowers">🌸🌷🌹</div>
+  </div>
+
+  <div class="card">
+    <div>
+      I wish I could hand these to you in person.<br><br>
+      Until then, I hope this makes you smile —
+      and reminds you that you matter.
+      <div class="signature">— Omar</div>
+    </div>
   </div>
 </div>
 
 <script>
 function start(){
   document.getElementById('intro').style.display='none';
-  document.getElementById('flowers').style.display='flex';
-  document.getElementById('message').style.display='block';
-  createPetals();
+  document.getElementById('scene').style.display='block';
+  petals();
 }
 
-function createPetals(){
-  const container=document.body;
-  for(let i=0;i<20;i++){
+function petals(){
+  for(let i=0;i<25;i++){
     const p=document.createElement('span');
-    p.innerText='🌸';
+    p.textContent='🌸';
     p.style.left=Math.random()*100+'vw';
-    p.style.animationDuration=(5+Math.random()*5)+'s';
-    p.style.fontSize=(14+Math.random()*20)+'px';
-    p.style.top='-10vh';
+    p.style.animationDuration=(6+Math.random()*6)+'s';
+    p.style.animationDelay=Math.random()*2+'s';
     p.className='petals';
-    container.appendChild(p);
-    setTimeout(()=>p.remove(),10000);
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),12000);
   }
 }
 </script>
