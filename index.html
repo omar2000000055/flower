@@ -1,467 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A little gift 🌸</title>
-  <style>
-    :root{
-      --bg1:#0b1020;
-      --bg2:#170b2b;
-      --card: rgba(255,255,255,0.08);
-      --stroke: rgba(255,255,255,0.14);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.70);
-      --accent: rgba(255, 210, 236, 0.95);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>For You</title>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background: radial-gradient(1200px 800px at 20% 15%, #2b1a56 0%, transparent 55%),
-                  radial-gradient(1000px 700px at 80% 25%, #1b4b5f 0%, transparent 60%),
-                  linear-gradient(160deg, var(--bg1), var(--bg2));
-      overflow:hidden;
-    }
+<style>
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  height:100%;
+  background:#050508;
+  color:#fff;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  overflow:hidden;
+}
 
-    /* soft floating bokeh */
-    .bokeh{
-      position:fixed; inset:0; pointer-events:none;
-      background:
-        radial-gradient(10px 10px at 20% 30%, rgba(255,255,255,0.10), transparent 60%),
-        radial-gradient(14px 14px at 70% 20%, rgba(255,255,255,0.08), transparent 60%),
-        radial-gradient(12px 12px at 60% 70%, rgba(255,255,255,0.07), transparent 60%),
-        radial-gradient(18px 18px at 30% 80%, rgba(255,255,255,0.06), transparent 60%);
-      filter: blur(1px);
-      opacity: .9;
-      animation: drift 10s ease-in-out infinite alternate;
-    }
-    @keyframes drift{
-      from{transform: translate3d(-8px,-6px,0) scale(1)}
-      to{transform: translate3d(10px,8px,0) scale(1.02)}
-    }
+.screen{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  padding:24px;
+}
 
-    .wrap{
-      height:100%;
-      display:grid;
-      place-items:center;
-      padding:22px;
-    }
+.fade{
+  opacity:0;
+  animation:fadeIn 2s ease forwards;
+}
 
-    .card{
-      width:min(520px, 92vw);
-      border-radius:22px;
-      background: var(--card);
-      border:1px solid var(--stroke);
-      box-shadow: 0 25px 70px rgba(0,0,0,0.45);
-      backdrop-filter: blur(10px);
-      padding:20px 18px 18px;
-      position:relative;
-      overflow:hidden;
-    }
+.delay1{animation-delay:1s}
+.delay2{animation-delay:3s}
 
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:14px;
-    }
+@keyframes fadeIn{
+  to{opacity:1}
+}
 
-    .pill{
-      font-size:12px;
-      padding:7px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,0.16);
-      color:var(--muted);
-      background: rgba(0,0,0,0.12);
-    }
+.tap{
+  margin-top:30px;
+  padding:14px 28px;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.3);
+  background:transparent;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+}
 
-    .title{
-      font-size:20px;
-      font-weight:700;
-      letter-spacing:.2px;
-      margin:0;
-    }
+.flowers{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+}
 
-    .hint{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-    }
+.flower{
+  font-size:80px;
+  opacity:0;
+  transform:scale(0);
+  animation:bloom 2s ease forwards;
+}
 
-    .stage{
-      margin-top:14px;
-      height:320px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,0.14);
-      background:
-        radial-gradient(400px 240px at 50% 65%, rgba(255, 190, 230, 0.22), transparent 60%),
-        radial-gradient(420px 260px at 50% 20%, rgba(160, 220, 255, 0.12), transparent 65%),
-        rgba(0,0,0,0.14);
-      position:relative;
-      overflow:hidden;
-      display:grid;
-      place-items:center;
-    }
+@keyframes bloom{
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
 
-    /* petals layer */
-    .petals{
-      position:absolute; inset:0;
-      pointer-events:none;
-      overflow:hidden;
-    }
-    .petal{
-      position:absolute;
-      width:12px; height:18px;
-      border-radius: 60% 60% 60% 60%;
-      background: linear-gradient(180deg, rgba(255,210,236,.95), rgba(255,140,200,.65));
-      transform: rotate(20deg);
-      opacity:0;
-      animation: fall linear forwards;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,.25));
-    }
-    @keyframes fall{
-      0%{ transform: translate3d(var(--x), -30px, 0) rotate(0deg); opacity:0;}
-      10%{opacity:1;}
-      100%{ transform: translate3d(calc(var(--x) + var(--drift)), 360px, 0) rotate(260deg); opacity:0;}
-    }
+.petals span{
+  position:absolute;
+  font-size:24px;
+  animation:fall linear infinite;
+}
 
-    /* bouquet */
-    .bouquet{
-      width:240px;
-      height:240px;
-      position:relative;
-      transform: translateY(14px) scale(.94);
-      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.35));
-      opacity:0;
-      transition: opacity .6s ease;
-    }
-    .bouquet.show{ opacity:1; }
+@keyframes fall{
+  from{transform:translateY(-10vh)}
+  to{transform:translateY(110vh)}
+}
 
-    .stem{
-      position:absolute;
-      left:50%; top:56%;
-      width:10px; height:110px;
-      background: linear-gradient(180deg, #6ce3a2, #2a8f69);
-      border-radius: 10px;
-      transform: translateX(-50%) rotate(-8deg);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.18);
-    }
-    .wrapribbon{
-      position:absolute;
-      left:50%; top:76%;
-      width:120px; height:26px;
-      transform: translateX(-50%);
-      border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,220,245,.9), rgba(255,140,200,.75));
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
-      opacity:.9;
-    }
-    .bow{
-      position:absolute;
-      left:50%; top:73%;
-      width:34px; height:34px;
-      transform: translateX(-50%) rotate(8deg);
-      background: radial-gradient(circle at 30% 35%, rgba(255,255,255,.5), transparent 35%),
-                  linear-gradient(180deg, rgba(255,220,245,.95), rgba(255,130,195,.8));
-      border-radius: 10px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
-    }
+.message{
+  position:absolute;
+  bottom:18%;
+  width:100%;
+  padding:0 30px;
+  opacity:0;
+  animation:fadeIn 2s ease forwards;
+  animation-delay:2s;
+}
 
-    .flower{
-      position:absolute;
-      left:50%; top:34%;
-      width:140px; height:140px;
-      transform: translateX(-50%) scale(.2);
-      opacity:0;
-      animation: bloom 1.4s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: var(--d);
-    }
-    @keyframes bloom{
-      0%{ transform: translateX(-50%) scale(.2); opacity:0; filter: blur(2px); }
-      55%{ opacity:1; filter: blur(0px); }
-      100%{ transform: translateX(-50%) scale(1); opacity:1; }
-    }
-
-    .petal2{
-      position:absolute;
-      inset:0;
-      transform-origin:50% 62%;
-      border-radius: 60% 60% 45% 45%;
-      background: radial-gradient(circle at 40% 30%, rgba(255,255,255,.55), transparent 35%),
-                  linear-gradient(180deg, rgba(255,220,245,.98), rgba(255,130,195,.78));
-      clip-path: ellipse(40% 52% at 50% 38%);
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
-    }
-
-    .center{
-      position:absolute;
-      left:50%; top:44%;
-      width:36px; height:36px;
-      transform: translate(-50%,-50%);
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.7), transparent 40%),
-                  radial-gradient(circle, #ffe39a, #ffb24d);
-      box-shadow: 0 10px 18px rgba(0,0,0,0.25);
-    }
-
-    .leaf{
-      position:absolute;
-      width:52px; height:30px;
-      border-radius: 60% 60% 60% 60%;
-      background: linear-gradient(180deg, rgba(108, 227, 162, .9), rgba(42, 143, 105, .9));
-      top:62%;
-      filter: drop-shadow(0 12px 18px rgba(0,0,0,.22));
-    }
-    .leaf.l1{ left:34%; transform: rotate(-22deg); }
-    .leaf.l2{ left:56%; transform: rotate(18deg); }
-
-    .cta{
-      margin-top:14px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-      flex-wrap:wrap;
-    }
-    button{
-      appearance:none;
-      border:none;
-      border-radius: 14px;
-      padding:12px 14px;
-      font-weight:700;
-      color:#140a1f;
-      background: linear-gradient(180deg, rgba(255,220,245,.98), rgba(255,150,210,.92));
-      box-shadow: 0 16px 30px rgba(0,0,0,0.30);
-      cursor:pointer;
-      transition: transform .12s ease, filter .12s ease;
-    }
-    button:active{ transform: translateY(1px) scale(.99); filter: brightness(.98); }
-    .small{
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    /* message reveal */
-    .msg{
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      padding:18px;
-      pointer-events:none;
-      opacity:0;
-      transform: translateY(8px);
-      transition: opacity .9s ease, transform .9s ease;
-    }
-    .msg.show{
-      opacity:1;
-      transform: translateY(0);
-    }
-    .msgbox{
-      width:min(420px, 92%);
-      background: rgba(0,0,0,0.35);
-      border:1px solid rgba(255,255,255,0.16);
-      border-radius:18px;
-      padding:16px 16px 14px;
-      backdrop-filter: blur(8px);
-    }
-    .msgbox h2{
-      margin:0 0 8px;
-      font-size:18px;
-      letter-spacing:.2px;
-    }
-    .msgbox p{
-      margin:0;
-      color: rgba(255,255,255,0.88);
-      line-height:1.5;
-      font-size:14px;
-      white-space: pre-line;
-    }
-
-    .footer{
-      margin-top:10px;
-      text-align:center;
-      color:rgba(255,255,255,0.55);
-      font-size:11px;
-    }
-  </style>
+.signature{
+  margin-top:18px;
+  opacity:.7;
+}
+</style>
 </head>
+
 <body>
-  <div class="bokeh"></div>
 
-  <div class="wrap">
-    <div class="card">
-      <div class="top">
-        <div>
-          <p class="title">A tiny gift 🌸</p>
-          <p class="hint">Tap the button… and let the flowers bloom.</p>
-        </div>
-        <div class="pill" id="toLine">To: You</div>
-      </div>
+<div class="screen" id="intro">
+  <div class="fade delay1">Someone far away wanted to give you flowers…</div>
+  <button class="tap fade delay2" onclick="start()">Tap to open</button>
+</div>
 
-      <div class="stage" id="stage">
-        <div class="petals" id="petals"></div>
+<div class="flowers" id="flowers" style="display:none;">
+  <div class="flower">🌸🌷🌹</div>
+</div>
 
-        <div class="bouquet" id="bouquet" aria-hidden="true">
-          <div class="stem"></div>
-          <div class="leaf l1"></div>
-          <div class="leaf l2"></div>
-
-          <!-- 3 flowers -->
-          <div class="flower" style="--d: .15s; top:18%; left:40%;">
-            <div class="petal2" style="transform: rotate(0deg)"></div>
-            <div class="petal2" style="transform: rotate(45deg)"></div>
-            <div class="petal2" style="transform: rotate(90deg)"></div>
-            <div class="petal2" style="transform: rotate(135deg)"></div>
-            <div class="petal2" style="transform: rotate(180deg)"></div>
-            <div class="petal2" style="transform: rotate(225deg)"></div>
-            <div class="petal2" style="transform: rotate(270deg)"></div>
-            <div class="petal2" style="transform: rotate(315deg)"></div>
-            <div class="center"></div>
-          </div>
-
-          <div class="flower" style="--d: .35s; top:10%; left:58%;">
-            <div class="petal2" style="transform: rotate(0deg)"></div>
-            <div class="petal2" style="transform: rotate(40deg)"></div>
-            <div class="petal2" style="transform: rotate(80deg)"></div>
-            <div class="petal2" style="transform: rotate(120deg)"></div>
-            <div class="petal2" style="transform: rotate(160deg)"></div>
-            <div class="petal2" style="transform: rotate(200deg)"></div>
-            <div class="petal2" style="transform: rotate(240deg)"></div>
-            <div class="petal2" style="transform: rotate(280deg)"></div>
-            <div class="petal2" style="transform: rotate(320deg)"></div>
-            <div class="center"></div>
-          </div>
-
-          <div class="flower" style="--d: .55s; top:26%; left:55%;">
-            <div class="petal2" style="transform: rotate(0deg)"></div>
-            <div class="petal2" style="transform: rotate(36deg)"></div>
-            <div class="petal2" style="transform: rotate(72deg)"></div>
-            <div class="petal2" style="transform: rotate(108deg)"></div>
-            <div class="petal2" style="transform: rotate(144deg)"></div>
-            <div class="petal2" style="transform: rotate(180deg)"></div>
-            <div class="petal2" style="transform: rotate(216deg)"></div>
-            <div class="petal2" style="transform: rotate(252deg)"></div>
-            <div class="petal2" style="transform: rotate(288deg)"></div>
-            <div class="petal2" style="transform: rotate(324deg)"></div>
-            <div class="center"></div>
-          </div>
-
-          <div class="wrapribbon"></div>
-          <div class="bow"></div>
-        </div>
-
-        <div class="msg" id="msg">
-          <div class="msgbox">
-            <h2 id="msgTitle">For you 💗</h2>
-            <p id="msgText"></p>
-          </div>
-        </div>
-      </div>
-
-      <div class="cta">
-        <button id="btn">Bloom the flowers</button>
-        <div class="small">Tip: it looks best full screen ✨</div>
-      </div>
-
-      <div class="footer" id="fromLine">— from Omar</div>
-    </div>
+<div class="message" id="message">
+  <div>
+    I wish I could give you these in person.<br>
+    Until then, let this remind you that<br>
+    someone is thinking of you.
+    <div class="signature">— Omar</div>
   </div>
+</div>
 
-  <script>
-    // ======= Customize here (or via URL parameters) =======
-    const DEFAULTS = {
-      to: "my favorite person",
-      from: "Omar",
-      title: "For you 💗",
-      message:
-`I wish I could hand these to you in person…
-so I’m sending them like this 🌸
+<script>
+function start(){
+  document.getElementById('intro').style.display='none';
+  document.getElementById('flowers').style.display='flex';
+  document.getElementById('message').style.display='block';
+  createPetals();
+}
 
-Thinking of you.`
+function createPetals(){
+  const container=document.body;
+  for(let i=0;i<20;i++){
+    const p=document.createElement('span');
+    p.innerText='🌸';
+    p.style.left=Math.random()*100+'vw';
+    p.style.animationDuration=(5+Math.random()*5)+'s';
+    p.style.fontSize=(14+Math.random()*20)+'px';
+    p.style.top='-10vh';
+    p.className='petals';
+    container.appendChild(p);
+    setTimeout(()=>p.remove(),10000);
+  }
+}
+</script>
 
-    };
-
-    // Read URL parameters: ?to=Name&from=Omar&title=...&msg=...
-    const params = new URLSearchParams(location.search);
-    const data = {
-      to: params.get("to") || DEFAULTS.to,
-      from: params.get("from") || DEFAULTS.from,
-      title: params.get("title") || DEFAULTS.title,
-      message: params.get("msg") ? decodeURIComponent(params.get("msg")) : DEFAULTS.message,
-    };
-
-    // Apply text
-    document.getElementById("toLine").textContent = `To: ${data.to}`;
-    document.getElementById("fromLine").textContent = `— from ${data.from}`;
-    document.getElementById("msgTitle").textContent = data.title;
-    document.getElementById("msgText").textContent = data.message;
-
-    // Animation logic
-    const btn = document.getElementById("btn");
-    const bouquet = document.getElementById("bouquet");
-    const msg = document.getElementById("msg");
-    const petalsWrap = document.getElementById("petals");
-    let started = false;
-
-    function makePetal() {
-      const p = document.createElement("div");
-      p.className = "petal";
-      const x = Math.floor(Math.random() * 100);
-      const drift = (Math.random() * 60 - 30).toFixed(1) + "px";
-      const dur = (Math.random() * 1.6 + 2.0).toFixed(2) + "s";
-      const delay = (Math.random() * 0.8).toFixed(2) + "s";
-      const scale = (Math.random() * 0.7 + 0.7).toFixed(2);
-      p.style.setProperty("--x", x + "vw");
-      p.style.setProperty("--drift", drift);
-      p.style.animationDuration = dur;
-      p.style.animationDelay = delay;
-      p.style.transform += ` scale(${scale})`;
-
-      petalsWrap.appendChild(p);
-      // cleanup after animation
-      setTimeout(() => p.remove(), (parseFloat(dur) + parseFloat(delay)) * 1000 + 200);
-    }
-
-    function startPetals() {
-      // burst
-      for (let i = 0; i < 18; i++) makePetal();
-      // drizzle
-      const interval = setInterval(() => {
-        if (!started) { clearInterval(interval); return; }
-        for (let i = 0; i < 3; i++) makePetal();
-      }, 450);
-    }
-
-    function start() {
-      if (started) return;
-      started = true;
-
-      btn.textContent = "One more look ✨";
-      bouquet.classList.add("show");
-      startPetals();
-
-      // reveal message after bouquet blooms
-      setTimeout(() => msg.classList.add("show"), 1200);
-
-      // Optional: auto fullscreen on mobile (only works after user gesture in some browsers)
-      const stage = document.getElementById("stage");
-      if (stage.requestFullscreen) {
-        // do nothing by default; uncomment if you want to try fullscreen:
-        // stage.requestFullscreen().catch(()=>{});
-      }
-    }
-
-    btn.addEventListener("click", start);
-
-    // Also allow tap anywhere on the stage
-    document.getElementById("stage").addEventListener("click", start);
-  </script>
 </body>
 </html>
