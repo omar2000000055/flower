@@ -11,9 +11,9 @@
   --soft:#161625;
   --text:#f2f2f7;
   --muted:#b6b6c6;
-  --pink:#f6b1c8;
-  --rose:#e96a9a;
-  --green:#3fa37c;
+  --pink:#ffd1e3;
+  --rose:#e85b93;
+  --green:#2d7f60;
 }
 
 *{box-sizing:border-box}
@@ -37,7 +37,7 @@ html,body{
 
 .fade{
   opacity:0;
-  transform:translateY(12px);
+  transform:translateY(14px);
   animation:fadeUp 1.8s ease forwards;
 }
 
@@ -55,97 +55,35 @@ html,body{
   font-size:15px;
   cursor:pointer;
 }
-
 .button:hover{background:rgba(255,255,255,.08)}
 
 #scene{display:none;position:absolute;inset:0}
 
-/* 🌹 Bouquet */
+/* Bouquet */
 .bouquet{
-  position:relative;
-  width:220px;
-  height:300px;
-  transform:scale(.7);
-  animation:rise 2s cubic-bezier(.2,.8,.2,1) forwards;
+  width:260px;
+  max-width:80vw;
+  animation:rise 2s cubic-bezier(.2,.85,.2,1) forwards;
 }
 
 @keyframes rise{
-  from{opacity:0;transform:translateY(40px) scale(.5)}
-  to{opacity:1;transform:translateY(0) scale(1)}
+  from{opacity:0;transform:translateY(40px) scale(.6)}
+  to{opacity:1;transform:none}
 }
-
-.stem{
-  position:absolute;
-  bottom:0;
-  left:50%;
-  width:10px;
-  height:160px;
-  background:linear-gradient(#4cc89a,#2d7f60);
-  border-radius:8px;
-  transform:translateX(-50%);
-}
-
-.leaf{
-  position:absolute;
-  width:50px;
-  height:26px;
-  background:linear-gradient(#6de0b2,#2d7f60);
-  border-radius:50px;
-  bottom:80px;
-}
-
-.leaf.left{left:20px;transform:rotate(-30deg)}
-.leaf.right{right:20px;transform:rotate(30deg)}
 
 .flower{
-  position:absolute;
-  width:80px;
-  height:80px;
-  top:40px;
-  left:50%;
-  transform:translateX(-50%) scale(0);
-  animation:bloom 1.8s cubic-bezier(.2,.9,.2,1) forwards;
+  transform-origin:center;
+  animation:bloom 1.4s cubic-bezier(.2,.9,.2,1) forwards;
+  opacity:0;
 }
 
-.f2{left:30%;top:70px;animation-delay:.3s}
-.f3{left:70%;top:70px;animation-delay:.5s}
+.f2{animation-delay:.15s}
+.f3{animation-delay:.3s}
+.f4{animation-delay:.45s}
 
 @keyframes bloom{
-  to{transform:translateX(-50%) scale(1)}
-}
-
-.petal{
-  position:absolute;
-  inset:0;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%,#fff,var(--pink));
-}
-
-.p1{transform:rotate(0deg)}
-.p2{transform:rotate(45deg)}
-.p3{transform:rotate(90deg)}
-.p4{transform:rotate(135deg)}
-.p5{transform:rotate(180deg)}
-.p6{transform:rotate(225deg)}
-.p7{transform:rotate(270deg)}
-.p8{transform:rotate(315deg)}
-
-.center-dot{
-  position:absolute;
-  inset:30%;
-  border-radius:50%;
-  background:radial-gradient(#ffe29a,#f6b24d);
-}
-
-.ribbon{
-  position:absolute;
-  bottom:60px;
-  left:50%;
-  width:120px;
-  height:26px;
-  background:linear-gradient(#ffd1e2,var(--rose));
-  border-radius:999px;
-  transform:translateX(-50%);
+  from{transform:scale(.35);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
 .card{
@@ -160,7 +98,7 @@ html,body{
   backdrop-filter:blur(12px);
   opacity:0;
   animation:fadeUp 1.6s ease forwards;
-  animation-delay:2s;
+  animation-delay:2.2s;
 }
 
 .signature{
@@ -188,37 +126,65 @@ html,body{
 
 <div id="scene">
   <div class="center">
-    <div class="bouquet">
-      <div class="stem"></div>
-      <div class="leaf left"></div>
-      <div class="leaf right"></div>
+    <!-- SVG BOUQUET -->
+    <svg class="bouquet" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="petalA" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#fff" stop-opacity=".8"/>
+          <stop offset="50%" stop-color="#ffd1e3"/>
+          <stop offset="100%" stop-color="#e85b93"/>
+        </radialGradient>
+        <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#6de0b2"/>
+          <stop offset="100%" stop-color="#2d7f60"/>
+        </linearGradient>
+        <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+          <feDropShadow dx="0" dy="18" stdDeviation="14" flood-opacity=".35"/>
+        </filter>
+      </defs>
 
-      <div class="flower f1">
-        <div class="petal p1"></div><div class="petal p2"></div>
-        <div class="petal p3"></div><div class="petal p4"></div>
-        <div class="petal p5"></div><div class="petal p6"></div>
-        <div class="petal p7"></div><div class="petal p8"></div>
-        <div class="center-dot"></div>
-      </div>
+      <!-- wrap -->
+      <path d="M70 260 Q160 210 250 260 L220 400 Q160 420 100 400 Z"
+            fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.12)" stroke-width="2"/>
 
-      <div class="flower f2">
-        <div class="petal p1"></div><div class="petal p2"></div>
-        <div class="petal p3"></div><div class="petal p4"></div>
-        <div class="petal p5"></div><div class="petal p6"></div>
-        <div class="petal p7"></div><div class="petal p8"></div>
-        <div class="center-dot"></div>
-      </div>
+      <!-- stems -->
+      <path d="M160 260 C150 300 148 330 150 390"
+            stroke="url(#leaf)" stroke-width="10" stroke-linecap="round"/>
+      <path d="M135 260 C120 310 118 340 120 388"
+            stroke="url(#leaf)" stroke-width="8" stroke-linecap="round"/>
+      <path d="M185 260 C200 310 202 340 205 388"
+            stroke="url(#leaf)" stroke-width="8" stroke-linecap="round"/>
 
-      <div class="flower f3">
-        <div class="petal p1"></div><div class="petal p2"></div>
-        <div class="petal p3"></div><div class="petal p4"></div>
-        <div class="petal p5"></div><div class="petal p6"></div>
-        <div class="petal p7"></div><div class="petal p8"></div>
-        <div class="center-dot"></div>
-      </div>
+      <!-- flowers -->
+      <g class="flower f1" filter="url(#shadow)" transform="translate(160 165)">
+        <g fill="url(#petalA)">
+          <ellipse cx="0" cy="-28" rx="22" ry="36"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(45)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(90)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(135)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(180)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(225)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(270)"/>
+          <ellipse cx="0" cy="-28" rx="22" ry="36" transform="rotate(315)"/>
+        </g>
+        <circle r="16" fill="#ffd27a"/>
+      </g>
 
-      <div class="ribbon"></div>
-    </div>
+      <g class="flower f2" filter="url(#shadow)" transform="translate(120 200) scale(.9)">
+        <use href="#f1"/>
+      </g>
+
+      <g class="flower f3" filter="url(#shadow)" transform="translate(210 205) scale(.9)">
+        <use href="#f1"/>
+      </g>
+
+      <g class="flower f4" filter="url(#shadow)" transform="translate(160 220) scale(.75)">
+        <use href="#f1"/>
+      </g>
+
+      <!-- ribbon -->
+      <rect x="82" y="300" width="156" height="32" rx="16" fill="#e85b93"/>
+    </svg>
   </div>
 
   <div class="card">
